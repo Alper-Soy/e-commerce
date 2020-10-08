@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu } from 'antd';
+import { Link } from 'react-router-dom';
 import {
   AppstoreOutlined,
   SettingOutlined,
@@ -18,30 +19,24 @@ const Header = () => {
   };
 
   return (
-    <>
-      <Menu onClick={handleClick} selectedKeys={[current]} mode='horizontal'>
-        <Item key='home' icon={<AppstoreOutlined />}>
-          HOME
-        </Item>
+    <Menu onClick={handleClick} selectedKeys={[current]} mode='horizontal'>
+      <Item className='nav nav-item' key='home' icon={<AppstoreOutlined />}>
+        <Link to='/'>HOME</Link>
+      </Item>
 
-        <Item
-          className='float-right'
-          key='register'
-          icon={<UserAddOutlined />}
-        >
-          Register
-        </Item>
+      <Item className='float-right' key='register' icon={<UserAddOutlined />}>
+        <Link to='/register'>Register</Link>
+      </Item>
 
-        <Item className='float-right' key='login' icon={<UserOutlined />}>
-          Login
-        </Item>
+      <Item className='float-right' key='login' icon={<UserOutlined />}>
+        <Link to='/login'>Login</Link>
+      </Item>
 
-        <SubMenu icon={<SettingOutlined />} title='Username'>
-          <Item key='setting:1'>Option 1</Item>
-          <Item key='setting:2'>Option 2</Item>
-        </SubMenu>
-      </Menu>
-    </>
+      <SubMenu icon={<SettingOutlined />} title='Username'>
+        <Item key='setting:1'>Option 1</Item>
+        <Item key='setting:2'>Option 2</Item>
+      </SubMenu>
+    </Menu>
   );
 };
 
