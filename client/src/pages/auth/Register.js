@@ -15,8 +15,8 @@ const Register = () => {
     };
 
     try {
-      const response = await auth.sendSignInLinkToEmail(email, config);
-      console.log(response);
+      await auth.sendSignInLinkToEmail(email, config);
+
       toast.success(
         `Email is sent to ${email}. Click the link to complete your registration.`
       );
