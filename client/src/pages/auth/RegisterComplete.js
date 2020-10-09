@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
-import { redirectUrl } from '../../config';
 
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState('');
@@ -42,7 +41,6 @@ const RegisterComplete = ({ history }) => {
         );
 
         if (result.user.emailVerified) {
-          // remove user email from local storage
           window.localStorage.removeItem('emailForRegistration');
 
           // get user id token
