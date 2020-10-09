@@ -14,13 +14,10 @@ const RegisterComplete = ({ history }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // validation
-    if (!email || !password) {
-      toast.error('Email and Password is required!');
-      return;
-    }
-
-    if (password.length < 6) {
-      toast.error('Password must be at least 6 characters long!');
+    if (!password || password.length < 6) {
+      toast.error(
+        'Password is required and must be at least 6 characters long!'
+      );
       return;
     }
 
