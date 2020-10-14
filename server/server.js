@@ -2,11 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
+const { readdirSync } = require('fs');
 require('dotenv').config();
 
 const { mongoConnection } = require('./database/mongoDB');
-
-const authRoutes = require('./routes/auth');
 
 mongoConnection();
 
@@ -16,7 +15,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.json({ limit: '2mb' }));
 app.use(cors());
 
-app.use('/api', authRoutes);
+readdirSync('./routes').map((route) =>
+  app.use('/api', require(`./routes/${route}`))
+);
 
 const port = process.env.PORT || 8080;
 
