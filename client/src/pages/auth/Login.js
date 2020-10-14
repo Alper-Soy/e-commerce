@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { auth, googleAuthProvider } from '../../firebase';
 import { toast } from 'react-toastify';
@@ -13,6 +13,14 @@ const Login = ({ history }) => {
   const [loading, setLoading] = useState(false);
 
   let dispatch = useDispatch();
+
+  const { user } = useSelector((state) => ({ ...state }));
+
+  useEffect(() => {
+    {
+      user && user.token && history.push('/');
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
