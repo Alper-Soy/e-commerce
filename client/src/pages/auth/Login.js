@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Button } from 'antd';
-import { MailOutlined } from '@ant-design/icons';
-
-import { auth } from '../../firebase';
+import { auth, googleAuthProvider } from '../../firebase';
 import { toast } from 'react-toastify';
+import { Button } from 'antd';
+import { GoogleOutlined, MailOutlined } from '@ant-design/icons';
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState('alpersoy89@gmail.com');
@@ -39,6 +38,27 @@ const Login = ({ history }) => {
     }
   };
 
+  const googleLogin = async () => {
+    try {
+      const result = await auth.signInWithPopup(googleAuthProvider);
+      const { user } = result;
+      const idTokenResult = await user.getIdTokenResult();
+
+      dispatch({
+        type: 'LOGGED_IN_USER',
+        payload: {
+          email: user.email,
+          token: idTokenResult.token,
+        },
+      });
+
+      history.push('/');
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   const loginForm = () => (
     <form onSubmit={handleSubmit}>
       <div className='form-group'>
@@ -65,7 +85,7 @@ const Login = ({ history }) => {
       <Button
         type='primary'
         shape='round'
-        className='mb-3 primary'
+        className='mb-3'
         block
         size='large'
         icon={<MailOutlined />}
@@ -77,12 +97,31 @@ const Login = ({ history }) => {
     </form>
   );
 
+  const googleLoginButton = () => (
+    <Button
+      type='danger'
+      shape='round'
+      className='mb-3 primary'
+      block
+      size='large'
+      icon={<GoogleOutlined />}
+      onClick={googleLogin}
+    >
+      Login with Google
+    </Button>
+  );
+
   return (
     <div className='container p-5'>
       <div className='row'>
         <div className='col-md-6 offset-md-3'>
-          <h4>Login</h4>
+          {loading ? (
+            <h4 className='text-danger'>Loading...</h4>
+          ) : (
+            <h4>Login</h4>
+          )}
           {loginForm()}
+          {googleLoginButton()}
         </div>
       </div>
     </div>
