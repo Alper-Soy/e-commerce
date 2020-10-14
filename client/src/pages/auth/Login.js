@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { auth, googleAuthProvider } from '../../firebase';
@@ -115,13 +116,15 @@ const Login = ({ history }) => {
     <div className='container p-5'>
       <div className='row'>
         <div className='col-md-6 offset-md-3'>
-          {loading ? (
-            <h4 className='text-danger'>Loading...</h4>
-          ) : (
-            <h4>Login</h4>
-          )}
+          {loading ? <h4 className='text-info'>Loading...</h4> : <h4>Login</h4>}
           {loginForm()}
           {googleLoginButton()}
+          <Link
+            className='float-right  text-primary font-weight-bold'
+            to='/forgot/password'
+          >
+            Forgot Password
+          </Link>
         </div>
       </div>
     </div>

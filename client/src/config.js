@@ -6,3 +6,4 @@ export const storageBucket = process.env.REACT_APP_STORAGE_BUCKET;
 export const messagingSenderId = process.env.REACT_APP_MESSAGING_SENDER_ID;
 export const appId = process.env.REACT_APP_APP_ID;
 export const redirectUrl = process.env.REACT_APP_REGISTER_REDIRECT_URL;
+export const forgotPasswordRedirect = process.env.REACT_APP_FORGOT_PASSWORD_REDIRECT;

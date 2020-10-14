@@ -11,6 +11,7 @@ import Header from './components/nav/Header';
 import RegisterComplete from './pages/auth/RegisterComplete';
 
 import 'react-toastify/dist/ReactToastify.min.css';
+import ForgotPassword from './pages/auth/ForgotPassword';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ const App = () => {
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Register} />
         <Route exact path='/register/complete' component={RegisterComplete} />
+        <Route exact path='/forgot/password' component={ForgotPassword} />
       </Switch>
     </React.Fragment>
   );
