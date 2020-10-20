@@ -10,6 +10,8 @@ import Register from './pages/auth/Register';
 import Header from './components/nav/Header';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import ForgotPassword from './pages/auth/ForgotPassword';
+import History from './pages/user/History';
+import UserRoute from './components/routes/UserRoute';  
 import { currentUser } from './api/auth';
 
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -22,7 +24,7 @@ const App = () => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
-        console.log('user', user);
+        // console.log('user', user);
 
         currentUser(idTokenResult.token)
           .then((res) => {
@@ -54,6 +56,7 @@ const App = () => {
         <Route exact path='/register' component={Register} />
         <Route exact path='/register/complete' component={RegisterComplete} />
         <Route exact path='/forgot/password' component={ForgotPassword} />
+        <UserRoute exact path='/user/history' component={History} />
       </Switch>
     </React.Fragment>
   );
