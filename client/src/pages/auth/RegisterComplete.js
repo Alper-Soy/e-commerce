@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { createOrUpdateUser } from '../../api/auth';
 
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  let dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
@@ -55,10 +57,21 @@ const RegisterComplete = ({ history }) => {
           // => because firebase keep track of currently logged in user
           let user = auth.currentUser;
           await user.updatePassword(password);
-          const idTokenResult = await user.getIdToken();
+          const idTokenResult = await user.getIdTokenResult();
 
           // populate user to redux store
-          console.log(`user: ${user}, idTokenResult: ${idTokenResult}`);
+          const res = await createOrUpdateUser(idTokenResult.token);
+
+          dispatch({
+            type: 'LOGGED_IN_USER',
+            payload: {
+              name: res.data.name,
+              email: res.data.email,
+              token: idTokenResult.token,
+              role: res.data.role,
+              _id: res.data._id,
+            },
+          });
 
           // redirect
           history.push('/');

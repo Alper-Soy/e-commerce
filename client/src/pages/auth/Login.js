@@ -6,20 +6,7 @@ import { auth, googleAuthProvider } from '../../firebase';
 import { toast } from 'react-toastify';
 import { Button } from 'antd';
 import { GoogleOutlined, MailOutlined } from '@ant-design/icons';
-import axios from 'axios';
-import { api } from '../../config';
-
-const createOrUpdateUser = async (authtoken) => {
-  return await axios.post(
-    `${api}/create-or-update-user`,
-    {},
-    {
-      headers: {
-        authtoken,
-      },
-    }
-  );
-};
+import { createOrUpdateUser } from '../../api/auth';
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState('alpersoy89@gmail.com');
@@ -72,11 +59,16 @@ const Login = ({ history }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
+      const res = await createOrUpdateUser(idTokenResult.token);
+
       dispatch({
         type: 'LOGGED_IN_USER',
         payload: {
-          email: user.email,
+          name: res.data.name,
+          email: res.data.email,
           token: idTokenResult.token,
+          role: res.data.role,
+          _id: res.data._id,
         },
       });
 

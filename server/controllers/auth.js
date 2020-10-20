@@ -5,7 +5,7 @@ exports.createOrUpdateUser = async (req, res) => {
   try {
     const user = await User.findOneAndUpdate(
       { email },
-      { name, picture },
+      { name: name ? name : email.split('@')[0], picture },
       { new: true }
     );
 
@@ -16,7 +16,7 @@ exports.createOrUpdateUser = async (req, res) => {
 
     const newUser = await new User({
       email,
-      name,
+      name: name ? name : email.split('@')[0],
       picture,
     }).save();
     console.log('USER CREATED', newUser);
