@@ -44,20 +44,19 @@ const Login = ({ history }) => {
       const result = await auth.signInWithEmailAndPassword(email, password);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
-      // console.log('idTokenResult => ', idTokenResult);
-      // console.log('result => ', result);
-      // console.log('user =>  ', user);
 
       const res = await createOrUpdateUser(idTokenResult.token);
-      console.log('Create or Update Res', res);
 
-      // dispatch({
-      //   type: 'LOGGED_IN_USER',
-      //   payload: {
-      //     email: user.email,
-      //     token: idTokenResult.token,
-      //   },
-      // });
+      dispatch({
+        type: 'LOGGED_IN_USER',
+        payload: {
+          name: res.data.name,
+          email: res.data.email,
+          token: idTokenResult.token,
+          role: res.data.role,
+          _id: res.data._id,
+        },
+      });
 
       history.push('/');
     } catch (error) {
