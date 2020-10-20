@@ -12,3 +12,14 @@ export const createOrUpdateUser = async (authtoken) => {
     }
   );
 };
+export const currentUser = async (authtoken) => {
+  return await axios.post(
+    `${api}/current-user`,
+    {},
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
