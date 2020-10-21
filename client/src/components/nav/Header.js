@@ -61,8 +61,16 @@ const Header = () => {
           icon={<SettingOutlined />}
           title={user.name}
         >
-          <Item key='setting:1'>Option 1</Item>
-          <Item key='setting:2'>Option 2</Item>
+          {user.role === 'subscriber' && (
+            <Item>
+              <Link to='/user/history'>Dashboard</Link>
+            </Item>
+          )}
+          {user.role === 'admin' && (
+            <Item>
+              <Link to='/admin/dashboard'>Dashboard</Link>
+            </Item>
+          )}
           <Item icon={<LogoutOutlined />} onClick={logout}>
             Logout
           </Item>
