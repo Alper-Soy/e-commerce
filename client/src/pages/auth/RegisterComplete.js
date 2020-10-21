@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
@@ -10,72 +10,64 @@ const RegisterComplete = ({ history }) => {
   const [password, setPassword] = useState('');
 
   let dispatch = useDispatch();
-  const { user } = useSelector((state) => ({ ...state }));
+  // const { user } = useSelector((state) => ({ ...state }));
 
-  useEffect(() => {
-    {
-      user && user.token && history.push('/');
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   {
+  //     user && user.token && history.push('/');
+  //   }
+  // }, [user]);
 
   useEffect(() => {
     setEmail(window.localStorage.getItem('emailForRegistration'));
-  }, []);
+  }, [history]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // validation
-    if (!password || password.length < 6) {
-      toast.error(
-        'Password is required and must be at least 6 characters long!'
-      );
+    if (!email || !password) {
+      toast.error('Email and password is required');
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters long');
       return;
     }
 
     try {
-      // Confirm the link is a sign-in with email link.
-      if (auth.isSignInWithEmailLink(window.location.href)) {
-        // Get the email if available. This should be available if the user completes
-        // the flow on the same device where they started it.
-        if (!email) {
-          // User opened the link on a different device. To prevent session fixation
-          // attacks, ask the user to provide the associated email again. For example:
-          toast.error('Please provide your email for confirmation');
-          history.push('/register');
-        }
+      const result = await auth.signInWithEmailLink(
+        email,
+        window.location.href
+      );
+      //   console.log("RESULT", result);
+      if (result.user.emailVerified) {
+        // remove user email fom local storage
+        window.localStorage.removeItem('emailForRegistration');
+        // get user id token
+        let user = auth.currentUser;
+        await user.updatePassword(password);
+        const idTokenResult = await user.getIdTokenResult();
+        // redux store
+        console.log('user', user, 'idTokenResult', idTokenResult);
 
-        const result = await auth.signInWithEmailLink(
-          email,
-          window.location.href
-        );
+        createOrUpdateUser(idTokenResult.token)
+          .then((res) => {
+            dispatch({
+              type: 'LOGGED_IN_USER',
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+          })
+          .catch((err) => console.log(err));
 
-        if (result.user.emailVerified) {
-          window.localStorage.removeItem('emailForRegistration');
-
-          // get user id token
-          // => with currentUser we don't have to save current user in the local storage
-          // => because firebase keep track of currently logged in user
-          let user = auth.currentUser;
-          await user.updatePassword(password);
-          const idTokenResult = await user.getIdTokenResult();
-
-          // populate user to redux store
-          const res = await createOrUpdateUser(idTokenResult.token);
-
-          dispatch({
-            type: 'LOGGED_IN_USER',
-            payload: {
-              name: res.data.name,
-              email: res.data.email,
-              token: idTokenResult.token,
-              role: res.data.role,
-              _id: res.data._id,
-            },
-          });
-
-          // redirect
-          history.push('/');
-        }
+        // redirect
+        history.push('/');
       }
     } catch (error) {
       console.log(error);

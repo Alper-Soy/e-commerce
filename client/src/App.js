@@ -14,6 +14,8 @@ import History from './pages/user/History';
 import UserRoute from './components/routes/UserRoute';
 import Password from './pages/user/Password';
 import Wishlist from './pages/user/Wishlist';
+import AdminRoute from './components/routes/AdminRoute';
+import AdminDashBoard from './pages/admin/AdminDashboard';
 import { currentUser } from './api/auth';
 
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -46,7 +48,7 @@ const App = () => {
     });
     // cleanup
     return () => unsubscribe();
-  }, []);
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -61,6 +63,7 @@ const App = () => {
         <UserRoute exact path='/user/history' component={History} />
         <UserRoute exact path='/user/password' component={Password} />
         <UserRoute exact path='/user/wishlist' component={Wishlist} />
+        <AdminRoute exact path='/admin/dashboard' component={AdminDashBoard} />
       </Switch>
     </React.Fragment>
   );

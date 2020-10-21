@@ -11,10 +11,8 @@ const Register = ({ history }) => {
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
-    {
-      user && user.token && history.push('/');
-    }
-  }, [user]);
+    user && user.token && history.push('/');
+  }, [user, history]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

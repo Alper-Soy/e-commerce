@@ -18,10 +18,8 @@ const Login = ({ history }) => {
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
-    {
-      user && user.token && history.push('/');
-    }
-  }, [user]);
+    user && user.token && history.push('/');
+  }, [user, history]);
 
   const roleBasedRedirect = (res) => {
     if (res.data.role === 'admin') history.push('/admin/dashboard');
