@@ -21,8 +21,12 @@ const CategoryCreate = () => {
     loadCategories();
   }, []);
 
-  const loadCategories = () =>
-    getCategories().then((c) => setCategories(c.data));
+  // const loadCategories = () =>
+  //   getCategories().then((c) => setCategories(c.data));
+  const loadCategories = async () => {
+    const categories = await getCategories();
+    setCategories(categories.data);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,8 +66,8 @@ const CategoryCreate = () => {
   const categoryForm = () => (
     <form onSubmit={handleSubmit}>
       <div className='form-group'>
-        <label>Name</label>
         <input
+          placeholder='Name'
           type='text'
           className='form-control'
           autoFocus
