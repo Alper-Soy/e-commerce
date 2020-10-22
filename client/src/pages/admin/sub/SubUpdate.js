@@ -3,17 +3,8 @@ import AdminNav from '../../../components/nav/AdminNav';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { getCategories } from '../../../api/category';
-import {
-  createSub,
-  getSub,
-  removeSub,
-  getSubs,
-  updateSub,
-} from '../../../api/sub';
-import { Link } from 'react-router-dom';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { getSub, updateSub } from '../../../api/sub';
 import CategoryForm from '../../../components/forms/CategoryForm';
-import LocalSearch from '../../../components/forms/LocalSearch';
 
 const SubUpdate = ({ history, match }) => {
   const [name, setName] = useState('');
@@ -26,19 +17,23 @@ const SubUpdate = ({ history, match }) => {
 
   useEffect(() => {
     loadCategories();
-    loadSub();
-  }, []);
+    // loadSub();
+    getSub(slug).then((s) => {
+      setName(s.data.name);
+      setParent(s.data.parent);
+    });
+  }, [slug]);
 
   const loadCategories = async () => {
     const categories = await getCategories();
     setCategories(categories.data);
   };
 
-  const loadSub = async () => {
-    const sub = await getSub(slug);
-    setName(sub.data.name);
-    setParent(sub.data.parent);
-  };
+  // const loadSub = async () => {
+  //   const sub = await getSub(slug);
+  //   setName(sub.data.name);
+  //   setParent(sub.data.parent);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +77,12 @@ const SubUpdate = ({ history, match }) => {
               <option>Please select</option>
               {categories.length > 0 &&
                 categories.map((c) => (
-                  <option key={c._id} value={c._id} selected={c._id === parent}>
+                  <option
+                    key={c._id}
+                    value={c._id}
+                    // selected={c._id === parent}
+                    selected
+                  >
                     {c.name}
                   </option>
                 ))}
