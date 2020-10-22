@@ -18,6 +18,7 @@ import AdminRoute from './components/routes/AdminRoute';
 import AdminDashBoard from './pages/admin/AdminDashboard';
 import CategoryCreate from './pages/admin/category/CategoryCreate';
 import CategoryUpdate from './pages/admin/category/CategoryUpdate';
+import SubCreate from './pages/admin/sub/SubCreate';
 import { currentUser } from './api/auth';
 
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -72,6 +73,7 @@ const App = () => {
           path='/admin/category/:slug'
           component={CategoryUpdate}
         />
+        <AdminRoute exact path='/admin/sub' component={SubCreate} />
       </Switch>
     </React.Fragment>
   );
