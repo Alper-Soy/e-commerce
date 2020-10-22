@@ -15,7 +15,7 @@ const CategoryUpdate = ({ history, match }) => {
   useEffect(() => {
     getCategory(slug).then((c) => setName(c.data.name));
   }, [slug]);
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
