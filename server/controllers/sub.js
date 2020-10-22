@@ -47,7 +47,7 @@ exports.read = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  let { name } = req.body;
+  let { name, parent } = req.body;
   const { slug } = req.params;
   name = name.charAt(0).toUpperCase() + name.slice(1);
   try {
@@ -57,7 +57,7 @@ exports.update = async (req, res) => {
 
     updated = await Sub.findOneAndUpdate(
       { slug },
-      { name, slug: slugify(name) },
+      { name, slug: slugify(name), parent },
       { new: true }
     );
 
