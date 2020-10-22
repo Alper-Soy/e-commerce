@@ -3,6 +3,10 @@ import React from 'react';
 const CategoryForm = ({ handleSubmit, name, setName }) => (
   <form onSubmit={handleSubmit}>
     <div className='form-group'>
+      <label>
+        <h6>Name</h6>
+      </label>
+
       <input
         placeholder='Name'
         type='text'

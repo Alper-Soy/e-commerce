@@ -2,10 +2,10 @@ const Sub = require('../models/sub');
 const slugify = require('slugify');
 
 exports.create = async (req, res) => {
-  let { name } = req.body;
+  let { name, parent } = req.body;
   name = name.charAt(0).toUpperCase() + name.slice(1);
   try {
-    const sub = new Sub({ name, slug: slugify(name) });
+    const sub = new Sub({ name, slug: slugify(name), parent });
 
     await sub.save();
 
