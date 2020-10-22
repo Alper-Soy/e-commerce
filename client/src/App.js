@@ -16,6 +16,7 @@ import Password from './pages/user/Password';
 import Wishlist from './pages/user/Wishlist';
 import AdminRoute from './components/routes/AdminRoute';
 import AdminDashBoard from './pages/admin/AdminDashboard';
+import CategoryCreate from './pages/admin/category/CategoryCreate';
 import { currentUser } from './api/auth';
 
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -64,6 +65,7 @@ const App = () => {
         <UserRoute exact path='/user/password' component={Password} />
         <UserRoute exact path='/user/wishlist' component={Wishlist} />
         <AdminRoute exact path='/admin/dashboard' component={AdminDashBoard} />
+        <AdminRoute exact path='/admin/category' component={CategoryCreate} />
       </Switch>
     </React.Fragment>
   );
