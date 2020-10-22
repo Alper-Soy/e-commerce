@@ -1,28 +1,28 @@
-const Category = require('../models/category');
+const Sub = require('../models/sub');
 const slugify = require('slugify');
 
 exports.create = async (req, res) => {
   let { name } = req.body;
   name = name.charAt(0).toUpperCase() + name.slice(1);
   try {
-    const category = new Category({ name, slug: slugify(name) });
+    const sub = new Sub({ name, slug: slugify(name) });
 
-    await category.save();
+    await sub.save();
 
-    return res.status(201).json(category);
+    return res.status(201).json(sub);
   } catch (err) {
     console.log(err);
-    res.status(400).send('Create category failed');
+    res.status(400).send('Create sub failed');
   }
 };
 
 exports.list = async (req, res) => {
   try {
-    const categories = await Category.find({}).sort({ createdAt: -1 });
+    const sub = await Sub.find({}).sort({ createdAt: -1 });
 
-    if (!categories) return res.status(400).json({ err: 'No category found!' });
+    if (!sub) return res.status(400).json({ err: 'No sub category found!' });
 
-    return res.status(200).json(categories);
+    return res.status(200).json(sub);
   } catch (err) {
     console.log(err);
     res.status(500).json('Server Error!');
@@ -32,11 +32,11 @@ exports.list = async (req, res) => {
 exports.read = async (req, res) => {
   const { slug } = req.params;
   try {
-    const category = await Category.findOne({ slug });
+    const sub = await Sub.findOne({ slug });
 
-    if (!category) return res.status(400).json({ err: 'No category found!' });
+    if (!sub) return res.status(400).json({ err: 'No sub category found!' });
 
-    return res.status(200).json(category);
+    return res.status(200).json(sub);
   } catch (err) {
     console.log(err);
     res.status(500).json('Server Error!');
@@ -48,10 +48,11 @@ exports.update = async (req, res) => {
   const { slug } = req.params;
   name = name.charAt(0).toUpperCase() + name.slice(1);
   try {
-    let updated = await Category.findOne({ slug });
-    if (!updated) return res.status(400).json({ err: 'Category not found!' });
+    let updated = await Sub.findOne({ slug });
+    if (!updated)
+      return res.status(400).json({ err: 'Sub category not found!' });
 
-    updated = await Category.findOneAndUpdate(
+    updated = await Sub.findOneAndUpdate(
       { slug },
       { name, slug: slugify(name) },
       { new: true }
@@ -60,17 +61,18 @@ exports.update = async (req, res) => {
     return res.status(200).json(updated);
   } catch (err) {
     console.log(err);
-    res.status(400).send('Category update failed');
+    res.status(400).send('Sub category update failed');
   }
 };
 
 exports.remove = async (req, res) => {
   const { slug } = req.params;
   try {
-    let deleted = await Category.findOne({ slug });
-    if (!deleted) return res.status(400).json({ err: 'Category not found!' });
+    let deleted = await Sub.findOne({ slug });
+    if (!deleted)
+      return res.status(400).json({ err: 'Sub category not found!' });
 
-    deleted = await Category.findOneAndDelete({ slug });
+    deleted = await Sub.findOneAndDelete({ slug });
     return res.json(deleted);
   } catch (err) {
     console.log(err);
