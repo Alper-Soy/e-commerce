@@ -5,7 +5,10 @@ exports.create = async (req, res) => {
   let { name, parent } = req.body;
   name = name.charAt(0).toUpperCase() + name.slice(1);
   try {
-    const sub = new Sub({ name, slug: slugify(name), parent });
+    const sub = new Sub({ name, slug: slugify(name), parent }).populate(
+      'parent',
+      'name'
+    );
 
     await sub.save();
 

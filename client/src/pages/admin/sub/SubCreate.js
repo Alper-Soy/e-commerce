@@ -3,7 +3,7 @@ import AdminNav from '../../../components/nav/AdminNav';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { getCategories } from '../../../api/category';
-import { createSub, getSub, removeSub } from '../../../api/sub';
+import { createSub, getSub, removeSub, getSubs } from '../../../api/sub';
 import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import CategoryForm from '../../../components/forms/CategoryForm';
@@ -14,17 +14,24 @@ const SubCreate = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('');
+  const [subs, setSubs] = useState([]);
   const [keyword, setKeyword] = useState('');
 
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     loadCategories();
+    loadSubs();
   }, []);
 
   const loadCategories = async () => {
     const categories = await getCategories();
     setCategories(categories.data);
+  };
+
+  const loadSubs = async () => {
+    const subs = await getSubs();
+    setSubs(subs.data);
   };
 
   const handleSubmit = async (e) => {
@@ -36,6 +43,7 @@ const SubCreate = () => {
       setLoading(false);
       setName('');
       toast.success(`"${res.data.name}" is created`);
+      loadSubs();
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -50,6 +58,7 @@ const SubCreate = () => {
         .then((res) => {
           setLoading(false);
           toast.error(`${res.data.name} deleted`);
+          loadSubs();
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -108,6 +117,23 @@ const SubCreate = () => {
             setName={setName}
           />
           <LocalSearch keyword={keyword} setKeyword={setKeyword} />
+
+          {subs.filter(searched(keyword)).map((sub) => (
+            <div className='alert alert-secondary' key={sub._id}>
+              {sub.name}
+              <span
+                onClick={() => handleRemove(sub.slug)}
+                className='btn btn-sm float-right'
+              >
+                <DeleteOutlined className='text-danger lg pl-2' />
+              </span>
+              <Link to={`/admin/sub/${sub.slug}`}>
+                <span className='btn btn-sm float-right'>
+                  <EditOutlined className='text-primary pr-2' />
+                </span>
+              </Link>
+            </div>
+          ))}
         </div>
       </div>
     </div>
