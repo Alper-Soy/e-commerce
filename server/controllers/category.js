@@ -45,8 +45,9 @@ exports.read = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const { name } = req.body;
+  let { name } = req.body;
   const { slug } = req.params;
+  name = name.charAt(0).toUpperCase() + name.slice(1);
   try {
     let updated = await Category.findOne({ slug });
     if (!updated) return res.status(400).json({ err: 'Category not found!' });

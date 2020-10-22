@@ -13,13 +13,8 @@ const CategoryUpdate = ({ history, match }) => {
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
-    loadCategory();
-  }, []);
-
-  const loadCategory = async () => {
-    const category = await getCategory(slug);
-    setName(category.data.name);
-  };
+    getCategory(slug).then((c) => setName(c.data.name));
+  }, [slug]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
