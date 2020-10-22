@@ -3,7 +3,8 @@ const slugify = require('slugify');
 const { findOne } = require('../models/category');
 
 exports.create = async (req, res) => {
-  const { name } = req.body;
+  let { name } = req.body;
+  name = name.charAt(0).toUpperCase() + name.slice(1);
   try {
     const category = new Category({ name, slug: slugify(name) });
 

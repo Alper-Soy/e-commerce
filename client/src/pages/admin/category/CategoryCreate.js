@@ -7,6 +7,8 @@ import {
   getCategories,
   removeCategory,
 } from '../../../api/category';
+import { Link } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const CategoryCreate = () => {
   const [name, setName] = useState('');
@@ -31,12 +33,32 @@ const CategoryCreate = () => {
       setLoading(false);
       setName('');
       toast.success(`"${res.data.name}" is created`);
+      loadCategories();
     } catch (err) {
       console.log(err);
       setLoading(false);
       if (err.response.status === 400) toast.error(err.response.data);
     }
   };
+
+  const handleRemove = async (slug) => {
+    if (window.confirm('Delete?')) {
+      setLoading(true);
+      removeCategory(slug, user.token)
+        .then((res) => {
+          setLoading(false);
+          toast.error(`${res.data.name} deleted`);
+          loadCategories();
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            setLoading(false);
+            toast.error(err.response.data);
+          }
+        });
+    }
+  };
+
   const categoryForm = () => (
     <form onSubmit={handleSubmit}>
       <div className='form-group'>
@@ -68,7 +90,23 @@ const CategoryCreate = () => {
             <h4>Create Category</h4>
           )}
           {categoryForm()}
-          {JSON.stringify(categories)}
+          <hr />
+          {categories.map((category) => (
+            <div className='alert alert-secondary' key={category._id}>
+              {category.name}
+              <span
+                onClick={() => handleRemove(category.slug)}
+                className='btn btn-sm float-right'
+              >
+                <DeleteOutlined className='text-danger' />
+              </span>
+              <Link to={`/admin/category/${category.slug}`}>
+                <span className='btn btn-sm float-right'>
+                  <EditOutlined className='text-primary' />
+                </span>
+              </Link>
+            </div>
+          ))}
         </div>
       </div>
     </div>
