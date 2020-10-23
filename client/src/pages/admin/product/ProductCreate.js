@@ -5,19 +5,19 @@ import { useSelector } from 'react-redux';
 import { createProduct } from '../../../api/product';
 
 const initialState = {
-  title: '',
-  descriptioin: '',
-  price: '',
+  title: 'Macbook Pro',
+  description: 'This is the best Apple product',
+  price: '20000',
   categories: [],
   category: '',
   subs: [],
-  shipping: '',
-  quantity: '',
+  shipping: 'Yes',
+  quantity: '50',
   images: [],
   colors: ['Black', 'Brown', 'Silver', 'White', 'Blue'],
   brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS'],
-  color: '',
-  brand: '',
+  color: 'White',
+  brand: 'Apple',
 };
 
 const ProductCreate = () => {
@@ -47,9 +47,12 @@ const ProductCreate = () => {
     try {
       const res = await createProduct(values, user.token);
       console.log(res.data);
+      window.alert(`"${res.data.title}" is created`);
+      window.location.reload();
     } catch (err) {
       console.log(err);
-      if (err.response.status === 400) toast.error(err.response.data);
+      // if (err.response.status === 400) toast.error(err.response.data);
+      toast.error(err.response.data.err);
     }
   };
 
