@@ -23,6 +23,8 @@ const initialState = {
 const ProductCreate = () => {
   const [values, setValues] = useState(initialState);
 
+  const { user } = useSelector((state) => ({ ...state }));
+
   const {
     title,
     description,
@@ -39,14 +41,21 @@ const ProductCreate = () => {
     brand,
   } = values;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //
+
+    try {
+      const res = await createProduct(values, user.token);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+      if (err.response.status === 400) toast.error(err.response.data);
+    }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setValues({ [name]: value });
+    setValues({ ...values, [name]: value });
   };
 
   return (
