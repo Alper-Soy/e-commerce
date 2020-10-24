@@ -5,6 +5,8 @@ const ProductCreateForm = ({
   handleChange,
   handleCategoryChange,
   values,
+  subOptions,
+  showSub,
 }) => {
   const {
     title,

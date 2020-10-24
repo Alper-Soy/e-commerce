@@ -25,6 +25,7 @@ const initialState = {
 const ProductCreate = () => {
   const [values, setValues] = useState(initialState);
   const [subOptions, setSubOptions] = useState([]);
+  const [showSub, setShowSub] = useState(false);
 
   const { user } = useSelector((state) => ({ ...state }));
 
@@ -87,6 +88,8 @@ const ProductCreate = () => {
             handleChange={handleChange}
             values={values}
             handleCategoryChange={handleCategoryChange}
+            subOptions={subOptions}
+            showSub={showSub}
           />
         </div>
       </div>
