@@ -13,15 +13,13 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.read = async (req, res) => {
-  try {
-    const products = await Product.find();
-    if (products.length === 0)
-      return res.status(400).json({ err: 'No products found!' });
+exports.listAll = async (req, res) => {
+  const products = await Product.find({})
+    .limit(parseInt(req.params.count))
+    .populate('category')
+    .populate('subs')
+    .sort([['createdAt', 'desc']])
+    .exec();
 
-    return res.json(products);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send('Server Error!');
-  }
+  return res.json(products);
 };

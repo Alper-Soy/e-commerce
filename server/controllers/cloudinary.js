@@ -13,7 +13,7 @@ exports.upload = async (req, res) => {
       resource_type: 'auto',
       height: 200,
       width: 150,
-      crop: 'imagga_scale',
+      crop: 'scale',
     });
     console.log(result);
     res.json({
