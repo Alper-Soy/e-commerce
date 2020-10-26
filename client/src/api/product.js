@@ -7,3 +7,6 @@ export const createProduct = async (product, authtoken) =>
       authtoken,
     },
   });
+
+export const getProductsByCount = async (count) =>
+  await axios.get(`${api}/products/${count}`);
