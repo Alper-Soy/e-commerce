@@ -11,9 +11,9 @@ exports.upload = async (req, res) => {
     let result = await cloudinary.uploader.upload(req.body.image, {
       public_id: `${Date.now()}`,
       resource_type: 'auto',
-      height: 200,
-      width: 150,
-      crop: 'scale',
+      // height: 200,
+      // width: 150,
+      // crop: 'scale',
     });
     console.log(result);
     res.json({
