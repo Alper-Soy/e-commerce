@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const slugify = require('slugify');
+const { delete } = require('../routes/product');
 
 exports.create = async (req, res) => {
   try {
@@ -22,4 +23,17 @@ exports.listAll = async (req, res) => {
     .exec();
 
   return res.json(products);
+};
+
+exports.remove = async (req, res) => {
+  const { slug } = req.params;
+  try {
+    let deleted = await Product.findOne({ slug });
+    if (!deleted) return res.status(400).json({ err: 'Product not found!' });
+    deleted = await Product.findOneAndDelete({ slug });
+    return res.json(deleted);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Server Error!');
+  }
 };
