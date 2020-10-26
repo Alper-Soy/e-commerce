@@ -36,3 +36,19 @@ exports.remove = async (req, res) => {
     res.status(500).send('Server Error!');
   }
 };
+
+exports.read = async (req, res) => {
+  const { slug } = req.params;
+  try {
+    const product = await Product.findOne({ slug })
+      .populate('category')
+      .populate('subs');
+
+    if (!product) return res.status(400).json({ err: 'No product found!' });
+
+    return res.status(200).json(product);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json('Server Error!');
+  }
+};

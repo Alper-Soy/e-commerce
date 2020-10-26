@@ -8,7 +8,8 @@ import FileUpload from '../../../components/forms/FileUpload';
 import { getCategories, getCategorySubs } from '../../../api/category';
 import { LoadingOutlined } from '@ant-design/icons';
 
-const ProductUpdate = () => {
+const ProductUpdate = ({ match }) => {
+  const { slug } = match.params;
   const { user } = useSelector((state) => ({ ...state }));
 
   return (
@@ -20,6 +21,7 @@ const ProductUpdate = () => {
 
         <div className='col-md-10'>
           <h4>Product update</h4>
+          {JSON.stringify(slug)}
           <hr />
         </div>
       </div>
