@@ -6,6 +6,7 @@ import { getProduct } from '../../../api/product';
 import FileUpload from '../../../components/forms/FileUpload';
 import { getCategories, getCategorySubs } from '../../../api/category';
 import { LoadingOutlined } from '@ant-design/icons';
+import ProductUpdateForm from '../../../components/forms/ProductUpdateForm';
 
 const initialState = {
   title: '',
@@ -49,6 +50,15 @@ const ProductUpdate = ({ match }) => {
       .catch();
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
+
   return (
     <div className='container-fluid'>
       <div className='row'>
@@ -58,6 +68,12 @@ const ProductUpdate = ({ match }) => {
 
         <div className='col-md-10'>
           <h4>Product update</h4>
+          <ProductUpdateForm
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            setValues={setValues}
+            values={values}
+          />
           <hr />
         </div>
       </div>
