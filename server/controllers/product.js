@@ -1,6 +1,5 @@
 const Product = require('../models/product');
 const slugify = require('slugify');
-const { delete } = require('../routes/product');
 
 exports.create = async (req, res) => {
   try {
