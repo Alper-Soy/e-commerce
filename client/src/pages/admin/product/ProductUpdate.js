@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AdminNav from '../../../components/nav/AdminNav';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import { getProduct } from '../../../api/product';
+import { getProduct, updateProduct } from '../../../api/product';
 import FileUpload from '../../../components/forms/FileUpload';
 import { getCategories, getCategorySubs } from '../../../api/category';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -30,7 +30,7 @@ const initialState = {
   brand: '',
 };
 
-const ProductUpdate = ({ match }) => {
+const ProductUpdate = ({ match, history }) => {
   const [values, setValues] = useState(initialState);
   const [categories, setCategories] = useState([]);
   const [subOptions, setSubOptions] = useState([]);
@@ -73,6 +73,22 @@ const ProductUpdate = ({ match }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    values.subs = arrayOfSubIds;
+    values.category = selectedCategory ? selectedCategory : values.category;
+
+    updateProduct(slug, values, user.token)
+      .then((res) => {
+        setLoading(false);
+        toast.success(`"${res.data.title}" is updated`);
+        history.push('/admin/dashboard');
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        toast.error(err.response.data.err);
+      });
   };
 
   const handleChange = (e) => {

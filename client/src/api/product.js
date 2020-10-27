@@ -20,3 +20,10 @@ export const removeProduct = async (slug, authtoken) =>
 
 export const getProduct = async (slug) =>
   await axios.get(`${api}/product/${slug}`);
+
+export const updateProduct = async (slug, product, authtoken) =>
+  await axios.put(`${api}/product/${slug}`, product, {
+    headers: {
+      authtoken,
+    },
+  });
