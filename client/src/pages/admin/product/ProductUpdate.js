@@ -34,6 +34,7 @@ const ProductUpdate = ({ match }) => {
   const [values, setValues] = useState(initialState);
   const [categories, setCategories] = useState([]);
   const [subOptions, setSubOptions] = useState([]);
+  const [arrayOfSubIds, setArrayOfSubIds] = useState([]);
 
   const { slug } = match.params;
   const { user } = useSelector((state) => ({ ...state }));
@@ -46,8 +47,19 @@ const ProductUpdate = ({ match }) => {
   const loadProduct = () => {
     getProduct(slug)
       .then((product) => {
-        // console.log('Single Product', product.data);
+        // 1 load single product
         setValues({ ...values, ...product.data });
+        // 2 load single product category subs
+        getCategorySubs(product.data.category._id).then((res) => {
+          setSubOptions(res.data); // on first load, show default subs
+        });
+        // 3 prepare array of sub ids to show as default sub values in antd Select
+        let arr = [];
+        product.data.subs.map((s) => {
+          arr.push(s._id);
+        });
+        console.log('ARR', arr);
+        setArrayOfSubIds((prev) => arr); // required for ant design select to work
       })
       .catch();
   };
@@ -100,6 +112,8 @@ const ProductUpdate = ({ match }) => {
             categories={categories}
             subOptions={subOptions}
             // showSub={showSub}
+            arrayOfSubIds={arrayOfSubIds}
+            setArrayOfSubIds={setArrayOfSubIds}
           />
           <hr />
         </div>
